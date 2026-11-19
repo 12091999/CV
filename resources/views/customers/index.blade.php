@@ -42,11 +42,17 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-green-700">
-            {{ session('success') }}
-        </div>
-    @endif
+    @if (session('success'))
+    <div class="mb-4 rounded-lg bg-green-100 px-4 py-3 text-green-800">
+        {{ session('success') }}
+    </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 rounded-lg bg-red-100 px-4 py-3 text-red-800">
+                {{ session('error') }}
+            </div>
+        @endif
 
     <div class="mb-6 grid gap-4 sm:grid-cols-3">
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

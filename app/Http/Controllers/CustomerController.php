@@ -109,13 +109,21 @@ class CustomerController extends Controller
      * Menghapus pelanggan.
      */
     public function destroy(Customer $customer)
-    {
-        $customer->delete();
+        {
+            try {
+                $customer->delete();
 
-        return redirect()
-            ->route('customers.index')
-            ->with('success', 'Data pelanggan berhasil dihapus.');
-    }
+                return redirect()
+                    ->route('customers.index')
+                    ->with('success', 'Data pelanggan berhasil dihapus.');
+
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                return redirect()
+                    ->route('customers.index')
+                    ->with('error', 'Pelanggan tidak dapat dihapus karena masih memiliki data booking atau transaksi terkait.');
+            }
+        }
 
     /**
      * Validasi data pelanggan.
