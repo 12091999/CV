@@ -6,13 +6,13 @@
 
 @section('content')
 <a href="{{ route('customers.index') }}"
-       class="text-sm font-semibold text-indigo-600">
+       class="text-sm font-semibold text-blue-600">
         ← Kembali ke daftar pelanggan
     </a>
 
     <div class="my-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Customer Profile
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -24,14 +24,14 @@
         </div>
 
         <a href="{{ route('customers.edit', $customer) }}"
-           class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white hover:bg-indigo-700">
+           class="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-700">
             Edit Pelanggan
         </a>
     </div>
 
     <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div class="mb-6 flex flex-wrap items-center gap-3">
-            <span class="rounded-full bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700">
+            <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700">
                 {{ $customer->customer_type === 'company' ? 'Company' : 'Individual' }}
             </span>
 

@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Transaction Management
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -19,7 +19,7 @@
         </div>
 
         <a href="{{ route('bookings.create') }}"
-           class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white hover:bg-indigo-700">
+           class="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-700">
             + Buat Pesanan
         </a>
     </div>
@@ -69,7 +69,7 @@
 
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p class="text-sm text-slate-500">Total Pembayaran Masuk</p>
-            <p class="mt-2 text-2xl font-bold text-indigo-600">
+            <p class="mt-2 text-2xl font-bold text-blue-600">
                 Rp{{ number_format($totalRevenue, 0, ',', '.') }}
             </p>
             <p class="mt-2 text-xs text-slate-400">Akumulasi pembayaran tercatat</p>
@@ -86,11 +86,11 @@
                 name="search"
                 value="{{ $search }}"
                 placeholder="Cari kode, pesanan, pelanggan..."
-                class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 lg:col-span-2"
+                class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 lg:col-span-2"
             >
 
             <select name="status"
-                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500">
+                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500">
                 <option value="all">Semua Status Pesanan</option>
                 <option value="pending" @selected($status === 'pending')>Pending</option>
                 <option value="confirmed" @selected($status === 'confirmed')>Confirmed</option>
@@ -100,7 +100,7 @@
             </select>
 
             <select name="payment_status"
-                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500">
+                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500">
                 <option value="all">Semua Pembayaran</option>
                 <option value="unpaid" @selected($paymentStatus === 'unpaid')>Unpaid</option>
                 <option value="partial" @selected($paymentStatus === 'partial')>Partial</option>
@@ -164,7 +164,7 @@
 
                         <tr class="hover:bg-slate-50">
                             <td class="px-6 py-5">
-                                <p class="font-bold text-indigo-600">
+                                <p class="font-bold text-blue-600">
                                     {{ $booking->booking_code }}
                                 </p>
                                 <p class="mt-1 font-medium text-slate-800">
@@ -237,7 +237,7 @@
                                     Buat pesanan pertama untuk mulai menggunakan modul ini.
                                 </p>
                                 <a href="{{ route('bookings.create') }}"
-                                   class="mt-4 inline-block rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white">
+                                   class="mt-4 inline-block rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white">
                                     Buat Pesanan
                                 </a>
                             </td>

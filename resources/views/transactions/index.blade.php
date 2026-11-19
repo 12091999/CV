@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Financial Management
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -19,7 +19,7 @@
         </div>
 
         <a href="{{ route('transactions.create') }}"
-           class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white hover:bg-indigo-700">
+           class="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-700">
             + Catat Transaksi
         </a>
     </div>
@@ -69,9 +69,9 @@
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex items-center justify-between">
                 <p class="text-sm font-medium text-slate-500">Net Income</p>
-                <span class="rounded-lg bg-indigo-100 px-3 py-2 text-indigo-700">◈</span>
+                <span class="rounded-lg bg-blue-100 px-3 py-2 text-blue-700">◈</span>
             </div>
-            <h3 class="mt-4 text-2xl font-bold {{ $netIncome >= 0 ? 'text-indigo-600' : 'text-red-600' }}">
+            <h3 class="mt-4 text-2xl font-bold {{ $netIncome >= 0 ? 'text-blue-600' : 'text-red-600' }}">
                 Rp {{ number_format((float) $netIncome, 0, ',', '.') }}
             </h3>
             <p class="mt-2 text-xs text-slate-400">Income dikurangi expense</p>
@@ -111,7 +111,7 @@
                        name="search"
                        value="{{ request('search') }}"
                        placeholder="Kode, deskripsi, booking..."
-                       class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:border-indigo-500">
+                       class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:border-blue-500">
             </div>
 
             <div>
@@ -166,7 +166,7 @@
 
             <div class="flex flex-wrap gap-2 md:col-span-2 lg:col-span-3">
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
+                        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
                     Terapkan Filter
                 </button>
 
@@ -204,7 +204,7 @@
                                     {{ $transaction->description }}
                                 </p>
                                 @if($transaction->booking)
-                                    <p class="mt-1 text-xs text-indigo-600">
+                                    <p class="mt-1 text-xs text-blue-600">
                                         {{ $transaction->booking->booking_code }}
                                     </p>
                                 @endif
@@ -253,7 +253,7 @@
 
                             <td class="px-6 py-4 text-center">
                                 <a href="{{ route('transactions.show', $transaction) }}"
-                                   class="font-semibold text-indigo-600 hover:text-indigo-800">
+                                   class="font-semibold text-blue-600 hover:text-blue-800">
                                     Detail
                                 </a>
                             </td>
@@ -266,7 +266,7 @@
                                     Catat pemasukan atau pengeluaran pertama perusahaan.
                                 </p>
                                 <a href="{{ route('transactions.create') }}"
-                                   class="mt-4 inline-block font-semibold text-indigo-600">
+                                   class="mt-4 inline-block font-semibold text-blue-600">
                                     + Tambah transaksi
                                 </a>
                             </td>

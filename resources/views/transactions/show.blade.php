@@ -21,7 +21,7 @@
 
     <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Transaction Detail
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -35,7 +35,7 @@
         <div class="flex flex-wrap gap-2">
             @if($transaction->status === 'completed')
                 <a href="{{ route('transactions.edit', $transaction) }}"
-                   class="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
+                   class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700">
                     Edit Transaksi
                 </a>
 

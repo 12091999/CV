@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+                <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                     Management
                 </p>
                 <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -19,7 +19,7 @@
             </div>
 
             <a href="{{ route('business-units.create') }}"
-               class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 font-semibold text-white shadow hover:bg-indigo-700">
+               class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white shadow hover:bg-blue-700">
                 + Tambah Unit Bisnis
             </a>
         </div>
@@ -109,7 +109,7 @@
                                 <td class="px-6 py-5">
                                     <div class="flex justify-end gap-2">
                                         @if($unit->is_active)
-                                            <a href="{{ route('business-catalog.show', $unit->slug) }}" class="rounded-lg bg-indigo-100 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-200">Katalog</a>
+                                            <a href="{{ route('business-catalog.show', $unit->slug) }}" class="rounded-lg bg-blue-100 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-200">Katalog</a>
                                         @endif
                                         <a href="{{ route('business-units.edit', $unit) }}"
                                            class="rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-700 hover:bg-amber-200">

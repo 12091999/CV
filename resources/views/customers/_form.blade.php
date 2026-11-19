@@ -7,7 +7,7 @@
         </label>
 
         <select name="customer_type" id="customer_type" required
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
             <option value="individual"
                 @selected(old('customer_type', $customer?->customer_type ?? 'individual') === 'individual')>
                 Individual / Perorangan
@@ -31,7 +31,7 @@
         <input type="text" name="name" id="name" required maxlength="255"
                value="{{ old('name', $customer?->name) }}"
                placeholder="Masukkan nama pelanggan"
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
         @error('name')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -46,7 +46,7 @@
         <input type="text" name="company_name" id="company_name" maxlength="255"
                value="{{ old('company_name', $customer?->company_name) }}"
                placeholder="Nama perusahaan atau instansi"
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
         @error('company_name')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -60,7 +60,7 @@
             <input type="email" name="email" id="email" maxlength="255"
                    value="{{ old('email', $customer?->email) }}"
                    placeholder="email@example.com"
-                   class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                   class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
             @error('email')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -73,7 +73,7 @@
             <input type="text" name="phone" id="phone" maxlength="30"
                    value="{{ old('phone', $customer?->phone) }}"
                    placeholder="08xxxxxxxxxx"
-                   class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                   class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
             @error('phone')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -86,7 +86,7 @@
 
         <textarea name="address" id="address" rows="3"
                   placeholder="Alamat pelanggan atau perusahaan"
-                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('address', $customer?->address) }}</textarea>
+                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">{{ old('address', $customer?->address) }}</textarea>
 
         @error('address')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -98,7 +98,7 @@
 
         <textarea name="notes" id="notes" rows="3"
                   placeholder="Catatan tambahan tentang pelanggan..."
-                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('notes', $customer?->notes) }}</textarea>
+                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">{{ old('notes', $customer?->notes) }}</textarea>
 
         @error('notes')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -109,7 +109,7 @@
         <label class="flex cursor-pointer items-center gap-3">
             <input type="checkbox" name="is_active" value="1"
                    @checked(old('is_active', $customer?->is_active ?? true))
-                   class="h-5 w-5 rounded border-slate-300 text-indigo-600">
+                   class="h-5 w-5 rounded border-slate-300 text-blue-600">
             <span>
                 <span class="block font-semibold">Pelanggan Aktif</span>
                 <span class="text-sm text-slate-500">
@@ -127,7 +127,7 @@
     </a>
 
     <button type="submit"
-            class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700">
+            class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
         {{ $submitLabel }}
     </button>
 </div>

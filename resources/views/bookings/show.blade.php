@@ -6,13 +6,13 @@
 
 @section('content')
 <a href="{{ route('bookings.index') }}"
-       class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+       class="text-sm font-semibold text-blue-600 hover:text-blue-800">
         ← Kembali ke daftar pesanan
     </a>
 
     <div class="my-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Order Details
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -24,7 +24,7 @@
         </div>
 
         <a href="{{ route('bookings.edit', $booking) }}"
-           class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white hover:bg-indigo-700">
+           class="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-700">
             Edit Pesanan
         </a>
     </div>
@@ -76,13 +76,13 @@
     <div class="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div class="mb-3 flex items-center justify-between">
             <h3 class="font-bold text-slate-900">Progres Pembayaran</h3>
-            <span class="text-sm font-bold text-indigo-600">
+            <span class="text-sm font-bold text-blue-600">
                 {{ number_format($paymentPercentage, 1) }}%
             </span>
         </div>
 
         <div class="h-3 overflow-hidden rounded-full bg-slate-100">
-            <div class="h-full rounded-full bg-indigo-600"
+            <div class="h-full rounded-full bg-blue-600"
                  style="width: {{ $paymentPercentage }}%">
             </div>
         </div>
@@ -135,7 +135,7 @@
                 </div>
 
                 <a href="{{ route('customers.show', $booking->customer) }}"
-                   class="inline-block text-sm font-semibold text-indigo-600 hover:underline">
+                   class="inline-block text-sm font-semibold text-blue-600 hover:underline">
                     Lihat profil pelanggan →
                 </a>
             </div>
@@ -162,7 +162,7 @@
                 </div>
 
                 <a href="{{ route('business-units.index') }}"
-                   class="inline-block text-sm font-semibold text-indigo-600 hover:underline">
+                   class="inline-block text-sm font-semibold text-blue-600 hover:underline">
                     Lihat seluruh unit bisnis →
                 </a>
             </div>
@@ -210,7 +210,7 @@
 
             <div>
                 <p class="text-sm text-slate-500">Total</p>
-                <p class="mt-1 font-bold text-indigo-600">
+                <p class="mt-1 font-bold text-blue-600">
                     Rp{{ number_format($total, 0, ',', '.') }}
                 </p>
             </div>

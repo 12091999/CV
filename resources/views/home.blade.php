@@ -12,10 +12,10 @@
             <section id="dashboard"
                 class="relative overflow-hidden rounded-2xl bg-slate-950 p-7 lg:p-9 text-white">
 
-                <div class="absolute -right-10 -top-20 w-72 h-72 rounded-full bg-orange-500/20 blur-3xl"></div>
+                <div class="absolute -right-10 -top-20 w-72 h-72 rounded-full bg-blue-500/20 blur-3xl"></div>
 
                 <div class="relative z-10 max-w-2xl">
-                    <p class="text-orange-400 font-semibold text-sm mb-3">
+                    <p class="text-blue-400 font-semibold text-sm mb-3">
                         COMPANY MANAGEMENT SYSTEM
                     </p>
 
@@ -30,7 +30,7 @@
                     </p>
 
                     <a href="#business"
-                        class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-xl font-semibold text-sm transition">
+                        class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-xl font-semibold text-sm transition">
                         Explore Business Units →
                     </a>
                 </div>
@@ -55,8 +55,8 @@
 
                     <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
                         <div class="flex justify-between items-center mb-5">
-                            <div class="w-11 h-11 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">Rp</div>
-                            <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full">Revenue</span>
+                            <div class="w-11 h-11 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">Rp</div>
+                            <span class="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full">Revenue</span>
                         </div>
                         <p class="text-sm text-slate-500">Total Pendapatan</p>
                         <h3 class="text-2xl font-bold mt-1">Rp 0</h3>

@@ -14,7 +14,7 @@
             required
             maxlength="255"
             placeholder="Contoh: Music Services"
-            class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         >
 
         @error('name')
@@ -32,7 +32,7 @@
             id="description"
             rows="4"
             placeholder="Jelaskan layanan atau aktivitas unit bisnis..."
-            class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         >{{ old('description', $businessUnit?->description) }}</textarea>
 
         @error('description')
@@ -47,7 +47,7 @@
                 name="is_active"
                 value="1"
                 @checked(old('is_active', $businessUnit?->is_active ?? true))
-                class="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                class="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
             >
 
             <span>
@@ -74,7 +74,7 @@
     </a>
 
     <button type="submit"
-            class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700">
+            class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
         {{ $submitLabel }}
     </button>
 </div>

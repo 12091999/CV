@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-8">
             <a href="{{ route('business-units.index') }}"
-               class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+               class="text-sm font-semibold text-blue-600 hover:text-blue-800">
                 ← Kembali ke daftar unit bisnis
             </a>
 

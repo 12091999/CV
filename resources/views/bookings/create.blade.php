@@ -6,12 +6,12 @@
 
 @section('content')
 <a href="{{ route('bookings.index') }}"
-       class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+       class="text-sm font-semibold text-blue-600 hover:text-blue-800">
         ← Kembali ke daftar pesanan
     </a>
 
     <div class="my-6">
-        <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+        <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
             New Transaction
         </p>
         <h2 class="mt-1 text-3xl font-bold text-slate-900">Buat Pesanan Baru</h2>

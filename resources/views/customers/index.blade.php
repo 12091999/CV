@@ -7,7 +7,7 @@
 @section('content')
 <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+            <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
                 Management
             </p>
             <h2 class="mt-1 text-3xl font-bold text-slate-900">
@@ -19,7 +19,7 @@
         </div>
 
         <a href="{{ route('customers.create') }}"
-           class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white hover:bg-indigo-700">
+           class="rounded-xl bg-blue-600 px-5 py-3 text-center font-semibold text-white hover:bg-blue-700">
             + Tambah Pelanggan
         </a>
     </div>
@@ -62,11 +62,11 @@
                 name="search"
                 value="{{ $search }}"
                 placeholder="Cari nama, perusahaan, email, telepon..."
-                class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 md:col-span-2"
+                class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 md:col-span-2"
             >
 
             <select name="status"
-                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500">
+                    class="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500">
                 <option value="all" @selected($status === 'all')>Semua Status</option>
                 <option value="active" @selected($status === 'active')>Aktif</option>
                 <option value="inactive" @selected($status === 'inactive')>Nonaktif</option>
@@ -133,7 +133,7 @@
                             </td>
 
                             <td class="px-6 py-5">
-                                <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                                <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                                     {{ $customer->customer_type === 'company' ? 'Company' : 'Individual' }}
                                 </span>
                             </td>

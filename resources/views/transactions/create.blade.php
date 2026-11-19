@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="mb-8">
-        <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+        <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
             Finance Management
         </p>
         <h2 class="mt-1 text-3xl font-bold text-slate-900">

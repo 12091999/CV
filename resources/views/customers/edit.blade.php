@@ -6,7 +6,7 @@
 
 @section('content')
 <a href="{{ route('customers.index') }}"
-       class="text-sm font-semibold text-indigo-600">
+       class="text-sm font-semibold text-blue-600">
         ← Kembali ke daftar pelanggan
     </a>
 

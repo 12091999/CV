@@ -6,12 +6,12 @@
 
 @section('content')
 <a href="{{ route('bookings.index') }}"
-       class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+       class="text-sm font-semibold text-blue-600 hover:text-blue-800">
         ← Kembali ke daftar pesanan
     </a>
 
     <div class="my-6">
-        <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
+        <p class="text-sm font-semibold uppercase tracking-wider text-blue-600">
             Update Transaction
         </p>
         <h2 class="mt-1 text-3xl font-bold text-slate-900">Edit Pesanan</h2>
@@ -20,12 +20,12 @@
         </p>
     </div>
 
-    <div class="mb-6 rounded-xl border border-indigo-100 bg-indigo-50 p-4">
-        <p class="text-sm text-indigo-700">Kode Pesanan</p>
-        <p class="mt-1 text-lg font-bold text-indigo-900">
+    <div class="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4">
+        <p class="text-sm text-blue-700">Kode Pesanan</p>
+        <p class="mt-1 text-lg font-bold text-blue-900">
             {{ $booking->booking_code }}
         </p>
-        <p class="mt-1 text-xs text-indigo-700">
+        <p class="mt-1 text-xs text-blue-700">
             Kode pesanan dibuat otomatis dan tidak dapat diubah.
         </p>
     </div>

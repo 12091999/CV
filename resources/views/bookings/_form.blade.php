@@ -12,7 +12,7 @@
 <div class="space-y-8">
     @if($selectedItem)
         <input type="hidden" name="business_item_id" value="{{ $selectedItem->id }}">
-        <div class="rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">Item katalog dipilih: <strong>{{ $selectedItem->name }}</strong>. Harga akan mengikuti data katalog yang tersimpan.</div>
+        <div class="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">Item katalog dipilih: <strong>{{ $selectedItem->name }}</strong>. Harga akan mengikuti data katalog yang tersimpan.</div>
     @endif
 
     <section>
@@ -31,7 +31,7 @@
                 </label>
 
                 <select name="customer_id" id="customer_id" required
-                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-indigo-500">
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-blue-500">
                     <option value="">Pilih pelanggan</option>
 
                     @foreach($customers as $customer)
@@ -65,7 +65,7 @@
                 </label>
 
                 <select name="business_unit_id" id="business_unit_id" required
-                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-indigo-500">
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-blue-500">
                     <option value="">Pilih unit bisnis</option>
 
                     @foreach($businessUnits as $unit)
@@ -109,7 +109,7 @@
                        value="{{ old('title', $booking?->title ?? $selectedItem?->name) }}"
                        placeholder="Contoh: Sound System untuk Wedding Event"
                        @readonly((bool) $selectedItem)
-                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                 @error('title')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -123,7 +123,7 @@
 
                 <textarea name="description" id="description" rows="3"
                           placeholder="Jelaskan detail jasa atau produk yang dipesan..."
-                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('description', $booking?->description ?? $selectedItem?->description) }}</textarea>
+                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">{{ old('description', $booking?->description ?? $selectedItem?->description) }}</textarea>
 
                 @error('description')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -138,7 +138,7 @@
 
                     <input type="date" name="event_date" id="event_date"
                            value="{{ old('event_date', $booking?->event_date?->format('Y-m-d')) }}"
-                           class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                     @error('event_date')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -153,7 +153,7 @@
                     <input type="text" name="location" id="location"
                            value="{{ old('location', $booking?->location) }}"
                            placeholder="Lokasi kegiatan atau pengiriman"
-                           class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                     @error('location')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -181,7 +181,7 @@
 
                 <input type="number" name="quantity" id="quantity" min="1" step="1" required
                        value="{{ $quantity }}"
-                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                 @error('quantity')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -197,19 +197,19 @@
                        inputmode="numeric" autocomplete="off" required
                        @readonly((bool) $selectedItem && (float) $selectedItem->price > 0)
                        value="{{ old('unit_price', $unitPrice) }}"
-                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                 @error('unit_price')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="rounded-xl border border-indigo-100 bg-indigo-50 p-5 md:col-span-2">
-                <p class="text-sm font-medium text-indigo-700">Estimasi Total Pesanan</p>
-                <p id="totalPreview" class="mt-2 text-3xl font-bold text-indigo-900">
+            <div class="rounded-xl border border-blue-100 bg-blue-50 p-5 md:col-span-2">
+                <p class="text-sm font-medium text-blue-700">Estimasi Total Pesanan</p>
+                <p id="totalPreview" class="mt-2 text-3xl font-bold text-blue-900">
                     Rp0
                 </p>
-                <p class="mt-2 text-xs text-indigo-600">
+                <p class="mt-2 text-xs text-blue-600">
                     Total = Jumlah × Harga Satuan. Nilai final dihitung ulang oleh server.
                 </p>
             </div>
@@ -224,7 +224,7 @@
                        value="{{ $amountPaid }}"
                        placeholder="Contoh: 200.000"
                        @readonly($booking !== null)
-                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
 
                 @error('amount_paid')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -235,7 +235,7 @@
                         Metode Pembayaran Awal
                     </label>
                     <select name="payment_method" id="payment_method"
-                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">
                         <option value="cash" @selected(old('payment_method', 'cash') === 'cash')>Cash</option>
                         <option value="transfer" @selected(old('payment_method') === 'transfer')>Transfer</option>
                     </select>
@@ -269,7 +269,7 @@
                 </label>
 
                 <select name="booking_status" id="booking_status" required
-                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-indigo-500">
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-blue-500">
                     <option value="pending" @selected(old('booking_status', $booking?->booking_status ?? 'pending') === 'pending')>
                         Pending — Menunggu
                     </option>
@@ -299,7 +299,7 @@
 
                 <textarea name="notes" id="notes" rows="4"
                           placeholder="Catatan tambahan untuk tim SIGAPRODUCTION..."
-                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('notes', $booking?->notes) }}</textarea>
+                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500">{{ old('notes', $booking?->notes) }}</textarea>
 
                 @error('notes')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -319,7 +319,7 @@
 
     <button type="submit"
             @disabled($customers->isEmpty() || $businessUnits->isEmpty())
-            class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">
+            class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
         {{ $submitLabel }}
     </button>
 </div>

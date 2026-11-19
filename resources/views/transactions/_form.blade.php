@@ -23,7 +23,7 @@
         <select name="type"
                 id="transaction_type"
                 required
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="income" @selected(old('type', $transaction?->type ?? 'income') === 'income')>
                 Income / Pemasukan
             </option>
@@ -40,7 +40,7 @@
         <select name="category"
                 id="transaction_category"
                 required
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="">Pilih kategori</option>
             @foreach([
                 'Booking Payment',
@@ -72,7 +72,7 @@
         </label>
         <select name="booking_id"
                 id="booking_id"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="">Tidak terhubung dengan booking</option>
             @foreach($bookings as $booking)
                 <option value="{{ $booking->id }}"
@@ -95,7 +95,7 @@
         <select name="business_unit_id"
                 id="business_unit_id"
                 required
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="">Pilih unit bisnis</option>
             @foreach($businessUnits as $unit)
                 <option value="{{ $unit->id }}"
@@ -116,7 +116,7 @@
                required
                maxlength="255"
                placeholder="Contoh: Pembayaran sewa studio musik"
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
     </div>
 
     <div>
@@ -131,13 +131,13 @@
                value="{{ old('amount', $transaction ? (int) round((float) $transaction->amount) : '') }}"
                required
                placeholder="1.500.000"
-               class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">amount) }}"
+               class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">amount) }}"
                min="0.01"
                max="9999999999999.99"
                step="0.01"
                required
                placeholder="1500000"
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
     </div>
 
     <div>
@@ -148,13 +148,13 @@
                name="transaction_date"
                value="{{ old('transaction_date', $transaction?->transaction_date?->format('Y-m-d') ?? now()->format('Y-m-d')) }}"
                required
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
     </div>
 
     <div>
         <label class="mb-2 block text-sm font-semibold">Metode Pembayaran</label>
         <select name="payment_method"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="">Tidak ditentukan</option>
             @foreach([
                 'cash' => 'Cash',
@@ -179,13 +179,13 @@
                value="{{ old('reference_number', $transaction?->reference_number) }}"
                maxlength="255"
                placeholder="Nomor bukti transfer atau referensi"
-               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+               class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
     </div>
 
     <div>
         <label class="mb-2 block text-sm font-semibold">Status Transaksi</label>
         <select name="status"
-                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">
+                class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
             <option value="completed"
                 @selected(old('status', $transaction?->status ?? 'completed') === 'completed')>
                 Completed
@@ -204,7 +204,7 @@
         <label class="mb-2 block text-sm font-semibold">Catatan Tambahan</label>
         <textarea name="notes"
                   rows="4"
-                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none"
+                  class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none"
                   placeholder="Catatan tambahan transaksi...">{{ old('notes', $transaction?->notes) }}</textarea>
     </div>
 
@@ -218,7 +218,7 @@
     </a>
 
     <button type="submit"
-            class="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700">
+            class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700">
         {{ $transaction ? 'Simpan Perubahan' : 'Simpan Transaksi' }}
     </button>
 
