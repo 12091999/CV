@@ -21,6 +21,11 @@ class BusinessUnit extends Model
         ];
     }
 
+    public function items(): HasMany
+    {
+        return $this->hasMany(BusinessItem::class);
+    }
+
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

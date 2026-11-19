@@ -2,13 +2,18 @@
 @php
     $booking = $booking ?? null;
     $selectedCustomer = old('customer_id', $booking?->customer_id);
-    $selectedBusinessUnit = old('business_unit_id', $booking?->business_unit_id);
+    $selectedBusinessUnit = old('business_unit_id', $booking?->business_unit_id ?? ($selectedUnit ?? null));
+    $selectedItem = $selectedItem ?? null;
     $quantity = old('quantity', $booking?->quantity ?? 1);
     $unitPrice = old('unit_price', $booking?->unit_price ?? 0);
     $amountPaid = old('amount_paid', $booking?->amount_paid ?? 0);
 @endphp
 
 <div class="space-y-8">
+    @if($selectedItem)
+        <input type="hidden" name="business_item_id" value="{{ $selectedItem->id }}">
+        <div class="rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">Item katalog dipilih: <strong>{{ $selectedItem->name }}</strong>. Harga akan mengikuti data katalog yang tersimpan.</div>
+    @endif
 
     <section>
         <div class="mb-5 border-b border-slate-200 pb-3">
@@ -101,8 +106,9 @@
                 </label>
 
                 <input type="text" name="title" id="title" required maxlength="255"
-                       value="{{ old('title', $booking?->title) }}"
+                       value="{{ old('title', $booking?->title ?? $selectedItem?->name) }}"
                        placeholder="Contoh: Sound System untuk Wedding Event"
+                       @readonly((bool) $selectedItem)
                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
 
                 @error('title')
@@ -117,7 +123,7 @@
 
                 <textarea name="description" id="description" rows="3"
                           placeholder="Jelaskan detail jasa atau produk yang dipesan..."
-                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('description', $booking?->description) }}</textarea>
+                          class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">{{ old('description', $booking?->description ?? $selectedItem?->description) }}</textarea>
 
                 @error('description')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -189,7 +195,8 @@
 
                 <input type="number" name="unit_price" id="unit_price"
                        min="0" step="0.01" required
-                       value="{{ $unitPrice }}"
+                       @readonly((bool) $selectedItem && (float) $selectedItem->price > 0)
+                       value="{{ old('unit_price', $booking?->unit_price ?? $selectedItem?->price ?? 0) }}"
                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
 
                 @error('unit_price')

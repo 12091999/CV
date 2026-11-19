@@ -108,6 +108,9 @@
 
                                 <td class="px-6 py-5">
                                     <div class="flex justify-end gap-2">
+                                        @if($unit->is_active)
+                                            <a href="{{ route('business-catalog.show', $unit->slug) }}" class="rounded-lg bg-indigo-100 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-200">Katalog</a>
+                                        @endif
                                         <a href="{{ route('business-units.edit', $unit) }}"
                                            class="rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-700 hover:bg-amber-200">
                                             Edit

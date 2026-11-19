@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BusinessItem;
 use App\Models\BusinessUnit;
 use App\Models\Customer;
 use App\Models\Transaction;
@@ -19,7 +20,7 @@ class BookingController extends Controller
         $status = $request->input('status', 'all');
         $paymentStatus = $request->input('payment_status', 'all');
 
-        $query = Booking::with(['customer', 'businessUnit']);
+        $query = Booking::with(['customer', 'businessUnit', 'businessItem']);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -72,52 +73,54 @@ class BookingController extends Controller
         ));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $customers = Customer::where('is_active', true)
-            ->orderBy('name')
-            ->get();
+        $customers = Customer::where('is_active', true)->orderBy('name')->get();
+        $businessUnits = BusinessUnit::where('is_active', true)->orderBy('name')->get();
+        $selectedUnit = $request->integer('business_unit_id') ?: null;
+        $selectedItem = null;
 
-        $businessUnits = BusinessUnit::where('is_active', true)
-            ->orderBy('name')
-            ->get();
+        if ($request->filled('business_item_id')) {
+            $selectedItem = BusinessItem::where('is_active', true)
+                ->with('businessUnit')
+                ->findOrFail($request->integer('business_item_id'));
+            $selectedUnit = $selectedItem->business_unit_id;
+        }
 
-        return view('bookings.create', compact(
-            'customers',
-            'businessUnits'
-        ));
+        return view('bookings.create', compact('customers', 'businessUnits', 'selectedUnit', 'selectedItem'));
     }
 
     public function store(Request $request)
     {
         $validated = $this->validateBooking($request);
 
+        if (!empty($validated['business_item_id'])) {
+            $item = BusinessItem::where('is_active', true)->findOrFail($validated['business_item_id']);
+            if ((int) $item->business_unit_id !== (int) $validated['business_unit_id']) {
+                throw ValidationException::withMessages(['business_item_id' => 'Item tidak sesuai dengan unit bisnis yang dipilih.']);
+            }
+            // Harga dan nama item diambil dari database, bukan dari input browser.
+            $validated['title'] = $item->name;
+            $validated['description'] = $item->description;
+            if ((float) $item->price > 0) {
+                $validated['unit_price'] = $item->price;
+            }
+        }
+
         $validated['booking_code'] = $this->generateBookingCode();
-        $validated['total_amount'] =
-            $validated['quantity'] * $validated['unit_price'];
-
+        $validated['total_amount'] = $validated['quantity'] * $validated['unit_price'];
         $validated['amount_paid'] = $validated['amount_paid'] ?? 0;
-
-        $this->validatePaymentAmount(
-            $validated['amount_paid'],
-            $validated['total_amount']
-        );
-
-        $validated['payment_status'] = $this->determinePaymentStatus(
-            $validated['amount_paid'],
-            $validated['total_amount']
-        );
+        $this->validatePaymentAmount($validated['amount_paid'], $validated['total_amount']);
+        $validated['payment_status'] = $this->determinePaymentStatus($validated['amount_paid'], $validated['total_amount']);
 
         Booking::create($validated);
 
-        return redirect()
-            ->route('bookings.index')
-            ->with('success', 'Pesanan berhasil dibuat.');
+        return redirect()->route('bookings.index')->with('success', 'Pesanan berhasil dibuat dan masuk ke Daftar Pesanan.');
     }
 
     public function show(Booking $booking)
     {
-        $booking->load(['customer', 'businessUnit']);
+        $booking->load(['customer', 'businessUnit', 'businessItem']);
 
         return view('bookings.show', compact('booking'));
     }
@@ -224,6 +227,7 @@ class BookingController extends Controller
                 'integer',
                 'exists:business_units,id',
             ],
+            'business_item_id' => ['nullable', 'integer', 'exists:business_items,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'event_date' => ['nullable', 'date'],

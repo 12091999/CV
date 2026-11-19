@@ -12,6 +12,7 @@ class Booking extends Model
         'booking_code',
         'customer_id',
         'business_unit_id',
+        'business_item_id',
         'title',
         'description',
         'event_date',
@@ -34,6 +35,11 @@ class Booking extends Model
             'total_amount' => 'decimal:2',
             'amount_paid' => 'decimal:2',
         ];
+    }
+
+    public function businessItem(): BelongsTo
+    {
+        return $this->belongsTo(BusinessItem::class);
     }
 
     public function customer(): BelongsTo

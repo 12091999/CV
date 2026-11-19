@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusinessUnitController;
+use App\Http\Controllers\BusinessCatalogController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\TransactionController;
@@ -20,6 +21,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('business-units', BusinessUnitController::class)
         ->except(['show']);
+
+    Route::get('/business/{slug}', [BusinessCatalogController::class, 'show'])
+        ->name('business-catalog.show');
 
     Route::resource('bookings', BookingController::class);
     
