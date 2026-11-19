@@ -118,12 +118,54 @@ class BookingController extends Controller
         return redirect()->route('bookings.index')->with('success', 'Pesanan berhasil dibuat dan masuk ke Daftar Pesanan.');
     }
 
-    public function show(Booking $booking)
-    {
-        $booking->load(['customer', 'businessUnit', 'businessItem']);
 
-        return view('bookings.show', compact('booking'));
-    }
+        public function show(Booking $booking)
+        {
+            $booking->load(['customer', 'businessUnit', 'businessItem']);
+
+            // Total nilai pesanan
+            $total = (float) $booking->total_amount;
+
+            // Total pembayaran yang sudah berhasil diterima
+            $paid = (float) $booking->transactions()
+                ->where('type', 'income')
+                ->where('status', 'completed')
+                ->sum('amount');
+
+            // Sisa tagihan
+            $remaining = max(0, $total - $paid);
+
+            // Persentase pembayaran
+            $paymentPercentage = $total > 0
+                ? min(100, ($paid / $total) * 100)
+                : 0;
+
+            // Warna status pesanan
+            $bookingStyles = [
+                'pending' => 'bg-amber-100 text-amber-700',
+                'confirmed' => 'bg-blue-100 text-blue-700',
+                'in_progress' => 'bg-violet-100 text-violet-700',
+                'completed' => 'bg-green-100 text-green-700',
+                'cancelled' => 'bg-red-100 text-red-700',
+            ];
+
+            // Warna status pembayaran
+            $paymentStyles = [
+                'unpaid' => 'bg-red-100 text-red-700',
+                'partial' => 'bg-amber-100 text-amber-700',
+                'paid' => 'bg-green-100 text-green-700',
+            ];
+
+            return view('bookings.show', compact(
+                'booking',
+                'total',
+                'paid',
+                'remaining',
+                'paymentPercentage',
+                'bookingStyles',
+                'paymentStyles'
+            ));
+        }
 
     public function edit(Booking $booking)
     {
