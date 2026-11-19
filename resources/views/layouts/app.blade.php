@@ -122,12 +122,14 @@
 </div>
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const toggleButton = document.getElementById('sidebarToggle');
     const menuIcon = document.getElementById('menuIcon');
     const mainContent = document.getElementById('mainContent');
+
     if (!sidebar || !overlay || !toggleButton || !menuIcon || !mainContent) return;
 
     const desktopBreakpoint = 1024;
@@ -135,7 +137,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setMenuIcon(isOpen) {
         toggleButton.setAttribute('aria-expanded', String(isOpen));
-        toggleButton.setAttribute('aria-label', isOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+        toggleButton.setAttribute(
+            'aria-label',
+            isOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'
+        );
+
         menuIcon.innerHTML = isOpen
             ? '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />'
             : '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />';
@@ -144,13 +150,20 @@ document.addEventListener('DOMContentLoaded', function () {
     function openSidebar() {
         sidebar.classList.remove('-translate-x-full', 'desktop-collapsed');
         mainContent.classList.remove('sidebar-expanded');
-        if (window.innerWidth < desktopBreakpoint) overlay.classList.remove('hidden');
-        else overlay.classList.add('hidden');
+
+        // Overlay hanya digunakan pada layar kecil.
+        if (window.innerWidth < desktopBreakpoint) {
+            overlay.classList.remove('hidden');
+        } else {
+            overlay.classList.add('hidden');
+        }
+
         setMenuIcon(true);
     }
 
     function closeSidebar() {
         overlay.classList.add('hidden');
+
         if (window.innerWidth >= desktopBreakpoint) {
             sidebar.classList.add('desktop-collapsed');
             sidebar.classList.remove('-translate-x-full');
@@ -160,29 +173,71 @@ document.addEventListener('DOMContentLoaded', function () {
             sidebar.classList.remove('desktop-collapsed');
             mainContent.classList.remove('sidebar-expanded');
         }
+
         setMenuIcon(false);
     }
 
-    if (isDesktop) openSidebar(); else closeSidebar();
+    if (isDesktop) {
+        openSidebar();
+    } else {
+        closeSidebar();
+    }
 
-    toggleButton.addEventListener('click', function () {
-        if (toggleButton.getAttribute('aria-expanded') === 'true') closeSidebar();
-        else openSidebar();
+    // Tombol menu untuk membuka dan menutup sidebar.
+    toggleButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        if (toggleButton.getAttribute('aria-expanded') === 'true') {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
     });
+
+    // Klik overlay menutup sidebar.
     overlay.addEventListener('click', closeSidebar);
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeSidebar();
+
+    // Klik di luar sidebar menutup sidebar.
+    document.addEventListener('click', function (event) {
+        const isOpen = toggleButton.getAttribute('aria-expanded') === 'true';
+
+        if (
+            isOpen &&
+            !sidebar.contains(event.target) &&
+            !toggleButton.contains(event.target)
+        ) {
+            closeSidebar();
+        }
     });
+
+    // Tombol Escape juga menutup sidebar.
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeSidebar();
+        }
+    });
+
+    // Klik menu navigasi pada layar kecil menutup sidebar.
     sidebar.querySelectorAll('nav a').forEach(function (link) {
         link.addEventListener('click', function () {
-            if (window.innerWidth < desktopBreakpoint) closeSidebar();
+            if (window.innerWidth < desktopBreakpoint) {
+                closeSidebar();
+            }
         });
     });
+
+    // Menyesuaikan sidebar ketika ukuran layar berubah.
     window.addEventListener('resize', function () {
         const nowDesktop = window.innerWidth >= desktopBreakpoint;
+
         if (nowDesktop !== isDesktop) {
             isDesktop = nowDesktop;
-            if (isDesktop) openSidebar(); else closeSidebar();
+
+            if (isDesktop) {
+                openSidebar();
+            } else {
+                closeSidebar();
+            }
         }
     });
 });
