@@ -5,8 +5,8 @@
     $selectedBusinessUnit = old('business_unit_id', $booking?->business_unit_id ?? ($selectedUnit ?? null));
     $selectedItem = $selectedItem ?? null;
     $quantity = old('quantity', $booking?->quantity ?? 1);
-    $unitPrice = old('unit_price', $booking?->unit_price ?? 0);
-    $amountPaid = old('amount_paid', $booking?->amount_paid ?? 0);
+    $unitPrice = old('unit_price', $booking ? (int) round((float) $booking->unit_price) : ($selectedItem ? (int) round((float) $selectedItem->price) : ''));
+    $amountPaid = old('amount_paid', $booking ? (int) round((float) $booking->amount_paid) : '');
 @endphp
 
 <div class="space-y-8">
@@ -193,11 +193,11 @@
                     Harga Satuan (Rp) <span class="text-red-500">*</span>
                 </label>
 
-                <input type="number" name="unit_price" id="unit_price"
-                       min="0" step="0.01" required
+                <input type="text" name="unit_price" id="unit_price"
+                       inputmode="numeric" autocomplete="off" required
                        @readonly((bool) $selectedItem && (float) $selectedItem->price > 0)
-                       value="{{ old('unit_price', $booking?->unit_price ?? $selectedItem?->price ?? 0) }}"
-                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       value="{{ old('unit_price', $unitPrice) }}"
+                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
 
                 @error('unit_price')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -219,17 +219,34 @@
                     Pembayaran Diterima (Rp)
                 </label>
 
-                <input type="number" name="amount_paid" id="amount_paid"
-                       min="0" step="0.01"
+                <input type="text" name="amount_paid" id="amount_paid"
+                       inputmode="numeric" autocomplete="off"
                        value="{{ $amountPaid }}"
-                       class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                       placeholder="Contoh: 200.000"
+                       @readonly($booking !== null)
+                       class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
 
                 @error('amount_paid')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
+                @if(!$booking)
+                    <label for="payment_method" class="mb-2 mt-4 block text-sm font-semibold">
+                        Metode Pembayaran Awal
+                    </label>
+                    <select name="payment_method" id="payment_method"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500">
+                        <option value="cash" @selected(old('payment_method', 'cash') === 'cash')>Cash</option>
+                        <option value="transfer" @selected(old('payment_method') === 'transfer')>Transfer</option>
+                    </select>
+                @else
+                    <p class="mt-2 text-xs text-slate-500">
+                        Pembayaran pada pesanan yang sudah dibuat dikelola melalui menu Transaksi.
+                    </p>
+                @endif
+
                 <p class="mt-2 text-xs text-slate-500">
-                    Status pembayaran akan ditentukan otomatis berdasarkan jumlah pembayaran.
+                    Status pembayaran dihitung otomatis berdasarkan jumlah pembayaran yang tercatat.
                 </p>
             </div>
 
@@ -311,11 +328,27 @@
 document.addEventListener('DOMContentLoaded', function () {
     const quantityInput = document.getElementById('quantity');
     const priceInput = document.getElementById('unit_price');
+    const paidInput = document.getElementById('amount_paid');
     const totalPreview = document.getElementById('totalPreview');
 
+    function digitsOnly(value) {
+        const digits = String(value ?? '').replace(/\D/g, '');
+        return digits.replace(/^0+(?=\d)/, '');
+    }
+
+    function formatRupiahInput(input) {
+        if (!input || input.readOnly) return;
+        const digits = digitsOnly(input.value);
+        input.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function numberFromInput(input) {
+        return Number(digitsOnly(input?.value)) || 0;
+    }
+
     function updateTotal() {
-        const quantity = Math.max(0, Number(quantityInput.value) || 0);
-        const price = Math.max(0, Number(priceInput.value) || 0);
+        const quantity = Math.max(0, Number(quantityInput?.value) || 0);
+        const price = numberFromInput(priceInput);
         const total = quantity * price;
 
         totalPreview.textContent = new Intl.NumberFormat('id-ID', {
@@ -325,9 +358,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }).format(total);
     }
 
-    quantityInput.addEventListener('input', updateTotal);
-    priceInput.addEventListener('input', updateTotal);
+    [priceInput, paidInput].forEach(function (input) {
+        if (!input) return;
+        input.value = digitsOnly(input.value).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        input.addEventListener('input', function () {
+            formatRupiahInput(input);
+            updateTotal();
+        });
+    });
 
+    quantityInput?.addEventListener('input', updateTotal);
     updateTotal();
 });
 </script>

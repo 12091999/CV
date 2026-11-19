@@ -123,9 +123,15 @@
         <label class="mb-2 block text-sm font-semibold">
             Nominal (Rp) <span class="text-red-500">*</span>
         </label>
-        <input type="number"
+        <input type="text"
                name="amount"
-               value="{{ old('amount', $transaction?->amount) }}"
+               id="transaction_amount"
+               inputmode="numeric"
+               autocomplete="off"
+               value="{{ old('amount', $transaction ? (int) round((float) $transaction->amount) : '') }}"
+               required
+               placeholder="1.500.000"
+               class="rupiah-input w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-indigo-500 focus:outline-none">amount) }}"
                min="0.01"
                max="9999999999999.99"
                step="0.01"
@@ -237,5 +243,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     bookingSelect.addEventListener('change', syncBooking);
     syncBooking();
+
+    const amountInput = document.getElementById('transaction_amount');
+
+    function formatAmount() {
+        if (!amountInput) return;
+        const digits = amountInput.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+        amountInput.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    if (amountInput) {
+        formatAmount();
+        amountInput.addEventListener('input', formatAmount);
+    }
 });
 </script>

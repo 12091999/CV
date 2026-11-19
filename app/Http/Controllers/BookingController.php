@@ -95,77 +95,123 @@ class BookingController extends Controller
         $validated = $this->validateBooking($request);
 
         if (!empty($validated['business_item_id'])) {
-            $item = BusinessItem::where('is_active', true)->findOrFail($validated['business_item_id']);
+            $item = BusinessItem::where('is_active', true)
+                ->findOrFail($validated['business_item_id']);
+
             if ((int) $item->business_unit_id !== (int) $validated['business_unit_id']) {
-                throw ValidationException::withMessages(['business_item_id' => 'Item tidak sesuai dengan unit bisnis yang dipilih.']);
+                throw ValidationException::withMessages([
+                    'business_item_id' => 'Item tidak sesuai dengan unit bisnis yang dipilih.',
+                ]);
             }
-            // Harga dan nama item diambil dari database, bukan dari input browser.
+
+            // Harga katalog selalu mengikuti harga yang tersimpan di database.
             $validated['title'] = $item->name;
             $validated['description'] = $item->description;
+
             if ((float) $item->price > 0) {
-                $validated['unit_price'] = $item->price;
+                $validated['unit_price'] = (int) round((float) $item->price);
             }
         }
 
-        $validated['booking_code'] = $this->generateBookingCode();
-        $validated['total_amount'] = $validated['quantity'] * $validated['unit_price'];
-        $validated['amount_paid'] = $validated['amount_paid'] ?? 0;
-        $this->validatePaymentAmount($validated['amount_paid'], $validated['total_amount']);
-        $validated['payment_status'] = $this->determinePaymentStatus($validated['amount_paid'], $validated['total_amount']);
+        $initialPayment = (int) ($validated['amount_paid'] ?? 0);
+        $paymentMethod = $validated['payment_method'] ?? 'cash';
 
-        Booking::create($validated);
+        unset($validated['amount_paid'], $validated['payment_method']);
 
-        return redirect()->route('bookings.index')->with('success', 'Pesanan berhasil dibuat dan masuk ke Daftar Pesanan.');
+        $totalAmount = (int) $validated['quantity'] * (int) $validated['unit_price'];
+
+        $this->validatePaymentAmount($initialPayment, $totalAmount);
+
+        DB::transaction(function () use (
+            $validated,
+            $initialPayment,
+            $paymentMethod,
+            $totalAmount,
+            $request
+        ) {
+            $booking = Booking::create([
+                ...$validated,
+                'booking_code' => $this->generateBookingCode(),
+                'total_amount' => $totalAmount,
+                'amount_paid' => 0,
+                'payment_status' => 'unpaid',
+            ]);
+
+            // Pembayaran awal harus dibuat sebagai transaksi agar muncul
+            // di laporan transaksi dan tetap tersinkron dengan detail booking.
+            if ($initialPayment > 0) {
+                do {
+                    $transactionCode = 'TRX-' . now()->format('Ymd') . '-'
+                        . Str::upper(Str::random(6));
+                } while (Transaction::where('transaction_code', $transactionCode)->exists());
+
+                Transaction::create([
+                    'transaction_code' => $transactionCode,
+                    'booking_id' => $booking->id,
+                    'business_unit_id' => $booking->business_unit_id,
+                    'type' => 'income',
+                    'category' => 'Booking Payment',
+                    'description' => 'Pembayaran awal booking ' . $booking->booking_code,
+                    'amount' => $initialPayment,
+                    'transaction_date' => now()->toDateString(),
+                    'payment_method' => $paymentMethod,
+                    'status' => 'completed',
+                    'recorded_by' => $request->user()->id,
+                ]);
+
+                $booking->update([
+                    'amount_paid' => $initialPayment,
+                    'payment_status' => $this->determinePaymentStatus(
+                        $initialPayment,
+                        $totalAmount
+                    ),
+                ]);
+            }
+        });
+
+        return redirect()
+            ->route('bookings.index')
+            ->with('success', 'Pesanan berhasil dibuat dan pembayaran awal berhasil dicatat.');
     }
 
+    public function show(Booking $booking)
+    {
+        $booking->load(['customer', 'businessUnit', 'businessItem']);
 
-        public function show(Booking $booking)
-        {
-            $booking->load(['customer', 'businessUnit', 'businessItem']);
+        $total = (int) round((float) $booking->total_amount);
+        // amount_paid disinkronkan oleh TransactionController setiap kali
+        // transaksi dibuat, diedit, atau dibatalkan.
+        $paid = (int) round((float) $booking->amount_paid);
+        $remaining = max(0, $total - $paid);
 
-            // Total nilai pesanan
-            $total = (float) $booking->total_amount;
+        $paymentPercentage = $total > 0
+            ? min(100, ($paid / $total) * 100)
+            : 0;
 
-            // Total pembayaran yang sudah berhasil diterima
-            $paid = (float) $booking->transactions()
-                ->where('type', 'income')
-                ->where('status', 'completed')
-                ->sum('amount');
+        $bookingStyles = [
+            'pending' => 'bg-amber-100 text-amber-700',
+            'confirmed' => 'bg-blue-100 text-blue-700',
+            'in_progress' => 'bg-violet-100 text-violet-700',
+            'completed' => 'bg-green-100 text-green-700',
+            'cancelled' => 'bg-red-100 text-red-700',
+        ];
 
-            // Sisa tagihan
-            $remaining = max(0, $total - $paid);
+        $paymentStyles = [
+            'unpaid' => 'bg-red-100 text-red-700',
+            'partial' => 'bg-amber-100 text-amber-700',
+            'paid' => 'bg-green-100 text-green-700',
+        ];
 
-            // Persentase pembayaran
-            $paymentPercentage = $total > 0
-                ? min(100, ($paid / $total) * 100)
-                : 0;
-
-            // Warna status pesanan
-            $bookingStyles = [
-                'pending' => 'bg-amber-100 text-amber-700',
-                'confirmed' => 'bg-blue-100 text-blue-700',
-                'in_progress' => 'bg-violet-100 text-violet-700',
-                'completed' => 'bg-green-100 text-green-700',
-                'cancelled' => 'bg-red-100 text-red-700',
-            ];
-
-            // Warna status pembayaran
-            $paymentStyles = [
-                'unpaid' => 'bg-red-100 text-red-700',
-                'partial' => 'bg-amber-100 text-amber-700',
-                'paid' => 'bg-green-100 text-green-700',
-            ];
-
-            return view('bookings.show', compact(
-                'booking',
-                'total',
-                'paid',
-                'remaining',
-                'paymentPercentage',
-                'bookingStyles',
-                'paymentStyles'
-            ));
-        }
+        return view('bookings.show', compact(
+            'booking',
+            'total',
+            'paid',
+            'remaining',
+            'paymentPercentage',
+            'bookingStyles',
+            'paymentStyles'
+        ));
+    }
 
     public function edit(Booking $booking)
     {
@@ -189,14 +235,14 @@ class BookingController extends Controller
     public function update(Request $request, Booking $booking)
 {
     $validated = $this->validateBooking($request);
+    unset($validated['payment_method']);
 
     DB::transaction(function () use ($validated, $booking) {
         $currentBooking = Booking::whereKey($booking->id)
             ->lockForUpdate()
             ->firstOrFail();
 
-        $totalAmount =
-            $validated['quantity'] * $validated['unit_price'];
+        $totalAmount = (int) $validated['quantity'] * (int) $validated['unit_price'];
 
         // Periksa apakah unit bisnis berubah sementara
         // masih ada transaksi yang terhubung.
@@ -225,7 +271,7 @@ class BookingController extends Controller
                 ->where('status', 'completed')
                 ->sum('amount');
 
-            if ((float) $totalPaid > (float) $totalAmount) {
+            if ((int) round((float) $totalPaid) > $totalAmount) {
                 throw ValidationException::withMessages([
                     'unit_price' =>
                         'Total pesanan tidak boleh lebih kecil daripada jumlah pembayaran yang sudah tercatat.',
@@ -258,37 +304,30 @@ class BookingController extends Controller
 
     private function validateBooking(Request $request): array
     {
-        // Ubah format rupiah Indonesia menjadi angka bersih.
-        $unitPrice = $request->input('unit_price');
+        // Input rupiah memakai titik sebagai pemisah ribuan.
+        // Bersihkan sebelum validasi Laravel.
+        foreach (['unit_price', 'amount_paid'] as $field) {
+            $value = $request->input($field);
 
-        if ($unitPrice !== null) {
-            $request->merge([
-                'unit_price' => preg_replace('/\D/', '', (string) $unitPrice),
-            ]);
+            if ($value !== null && $value !== '') {
+                $request->merge([
+                    $field => preg_replace('/\D/', '', (string) $value),
+                ]);
+            }
         }
 
         return $request->validate([
-            'customer_id' => [
-                'required',
-                'integer',
-                'exists:customers,id',
-            ],
-            'business_unit_id' => [
-                'required',
-                'integer',
-                'exists:business_units,id',
-            ],
-            'business_item_id' => [
-                'nullable',
-                'integer',
-                'exists:business_items,id',
-            ],
+            'customer_id' => ['required', 'integer', 'exists:customers,id'],
+            'business_unit_id' => ['required', 'integer', 'exists:business_units,id'],
+            'business_item_id' => ['nullable', 'integer', 'exists:business_items,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'event_date' => ['nullable', 'date'],
             'location' => ['nullable', 'string'],
             'quantity' => ['required', 'integer', 'min:1'],
-            'unit_price' => ['required', 'numeric', 'min:0'],
+            'unit_price' => ['required', 'integer', 'min:0', 'max:900000000000'],
+            'amount_paid' => ['nullable', 'integer', 'min:0', 'max:900000000000'],
+            'payment_method' => ['nullable', 'in:cash,transfer'],
             'booking_status' => [
                 'required',
                 'in:pending,confirmed,in_progress,completed,cancelled',
@@ -301,7 +340,7 @@ class BookingController extends Controller
         float|int|string $amountPaid,
         float|int|string $totalAmount
     ): void {
-        if ((float) $amountPaid > (float) $totalAmount) {
+        if ((int) round((float) $amountPaid) > (int) round((float) $totalAmount)) {
             throw ValidationException::withMessages([
                 'amount_paid' => 'Jumlah pembayaran tidak boleh melebihi total pesanan.',
             ]);
@@ -312,11 +351,14 @@ class BookingController extends Controller
         float|int|string $amountPaid,
         float|int|string $totalAmount
     ): string {
-        if ((float) $amountPaid <= 0) {
+        $paid = (int) round((float) $amountPaid);
+        $total = (int) round((float) $totalAmount);
+
+        if ($paid <= 0) {
             return 'unpaid';
         }
 
-        if ((float) $amountPaid >= (float) $totalAmount) {
+        if ($paid >= $total) {
             return 'paid';
         }
 

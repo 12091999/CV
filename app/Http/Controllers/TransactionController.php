@@ -326,6 +326,14 @@ class TransactionController extends Controller
      */
     private function validateTransaction(Request $request): array
     {
+        $amount = $request->input('amount');
+
+        if ($amount !== null && $amount !== '') {
+            $request->merge([
+                'amount' => preg_replace('/\D/', '', (string) $amount),
+            ]);
+        }
+
         $data = $request->validate([
             'booking_id' => [
                 'nullable',
@@ -358,9 +366,9 @@ class TransactionController extends Controller
 
             'amount' => [
                 'required',
-                'numeric',
+                'integer',
                 'gt:0',
-                'max:900.000.000.000',
+                'max:900000000000',
             ],
 
             'transaction_date' => [
@@ -439,11 +447,10 @@ class TransactionController extends Controller
             )
             ->sum('amount');
 
-        $newPayment = (float) $data['amount'];
+        $newPayment = (int) $data['amount'];
+        $totalPaid = (int) round((float) $existingPayments) + $newPayment;
 
-        $totalPaid = (float) $existingPayments + $newPayment;
-
-        if ($totalPaid > (float) $booking->total_amount) {
+        if ($totalPaid > (int) round((float) $booking->total_amount)) {
             throw ValidationException::withMessages([
                 'amount' => 'Total pembayaran melebihi sisa tagihan booking.',
             ]);
@@ -455,13 +462,12 @@ class TransactionController extends Controller
      */
     private function syncBookingPayment(Booking $booking): void
     {
-        $totalPaid = Transaction::where('booking_id', $booking->id)
+        $totalPaid = (int) round((float) Transaction::where('booking_id', $booking->id)
             ->where('type', 'income')
             ->where('status', 'completed')
-            ->sum('amount');
+            ->sum('amount'));
 
-        $totalPaid = (float) $totalPaid;
-        $totalAmount = (float) $booking->total_amount;
+        $totalAmount = (int) round((float) $booking->total_amount);
 
         if ($totalPaid > $totalAmount) {
             throw ValidationException::withMessages([
