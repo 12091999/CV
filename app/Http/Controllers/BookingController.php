@@ -295,6 +295,16 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking)
     {
+        // Periksa apakah pesanan memiliki riwayat transaksi.
+        if ($booking->transactions()->exists()) {
+            return redirect()
+                ->route('bookings.index')
+                ->withErrors([
+                    'booking' => 'Pesanan tidak dapat dihapus karena sudah memiliki riwayat transaksi pembayaran. Silakan ubah status pesanan menjadi Dibatalkan jika pesanan tidak dilanjutkan.',
+                ]);
+        }
+
+        // Hapus pesanan jika belum memiliki transaksi.
         $booking->delete();
 
         return redirect()
