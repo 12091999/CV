@@ -258,6 +258,15 @@ class BookingController extends Controller
 
     private function validateBooking(Request $request): array
     {
+        // Ubah format rupiah Indonesia menjadi angka bersih.
+        $unitPrice = $request->input('unit_price');
+
+        if ($unitPrice !== null) {
+            $request->merge([
+                'unit_price' => preg_replace('/\D/', '', (string) $unitPrice),
+            ]);
+        }
+
         return $request->validate([
             'customer_id' => [
                 'required',
@@ -269,7 +278,11 @@ class BookingController extends Controller
                 'integer',
                 'exists:business_units,id',
             ],
-            'business_item_id' => ['nullable', 'integer', 'exists:business_items,id'],
+            'business_item_id' => [
+                'nullable',
+                'integer',
+                'exists:business_items,id',
+            ],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'event_date' => ['nullable', 'date'],
