@@ -10,6 +10,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Saat sidebar ditutup pada layar desktop, konten melebar penuh. */
+        @media (min-width: 1024px) {
+            #sidebar.desktop-collapsed {
+                transform: translateX(-100%);
+            }
+
+            #mainContent.sidebar-expanded {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-slate-100 font-sans text-slate-800">
@@ -140,7 +153,7 @@
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 lg:ml-72 min-w-0">
+    <main id="mainContent" class="flex-1 lg:ml-72 min-w-0 transition-all duration-300">
 
         <!-- TOPBAR -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
@@ -548,39 +561,65 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('sidebarOverlay');
     const toggleButton = document.getElementById('sidebarToggle');
     const menuIcon = document.getElementById('menuIcon');
+    const mainContent = document.getElementById('mainContent');
 
-    if (!sidebar || !overlay || !toggleButton) {
+    if (!sidebar || !overlay || !toggleButton || !menuIcon || !mainContent) {
         return;
     }
 
+    const desktopBreakpoint = 1024;
+    let isDesktop = window.innerWidth >= desktopBreakpoint;
+
+    function setMenuIcon(isOpen) {
+        toggleButton.setAttribute('aria-expanded', String(isOpen));
+        toggleButton.setAttribute(
+            'aria-label',
+            isOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'
+        );
+
+        menuIcon.innerHTML = isOpen
+            ? '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />'
+            : '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />';
+    }
+
     function openSidebar() {
-        sidebar.classList.remove('-translate-x-full');
-        overlay.classList.remove('hidden');
+        sidebar.classList.remove('-translate-x-full', 'desktop-collapsed');
+        mainContent.classList.remove('sidebar-expanded');
 
-        toggleButton.setAttribute('aria-expanded', 'true');
-        toggleButton.setAttribute('aria-label', 'Tutup menu navigasi');
+        if (window.innerWidth < desktopBreakpoint) {
+            overlay.classList.remove('hidden');
+        } else {
+            overlay.classList.add('hidden');
+        }
 
-        menuIcon.innerHTML =
-            '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />';
+        setMenuIcon(true);
     }
 
     function closeSidebar() {
-        if (window.innerWidth < 1024) {
-            sidebar.classList.add('-translate-x-full');
-        }
-
         overlay.classList.add('hidden');
 
-        toggleButton.setAttribute('aria-expanded', 'false');
-        toggleButton.setAttribute('aria-label', 'Buka menu navigasi');
+        if (window.innerWidth >= desktopBreakpoint) {
+            sidebar.classList.add('desktop-collapsed');
+            sidebar.classList.remove('-translate-x-full');
+            mainContent.classList.add('sidebar-expanded');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.remove('desktop-collapsed');
+            mainContent.classList.remove('sidebar-expanded');
+        }
 
-        menuIcon.innerHTML =
-            '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />';
+        setMenuIcon(false);
+    }
+
+    // Kondisi awal: sidebar terbuka pada desktop, tertutup pada layar kecil.
+    if (isDesktop) {
+        openSidebar();
+    } else {
+        closeSidebar();
     }
 
     toggleButton.addEventListener('click', function () {
-        const isOpen = !sidebar.classList.contains('-translate-x-full');
-
+        const isOpen = toggleButton.getAttribute('aria-expanded') === 'true';
         if (isOpen) {
             closeSidebar();
         } else {
@@ -598,21 +637,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sidebar.querySelectorAll('nav a').forEach(function (link) {
         link.addEventListener('click', function () {
-            if (window.innerWidth < 1024) {
+            if (window.innerWidth < desktopBreakpoint) {
                 closeSidebar();
             }
         });
     });
 
+    // Atur ulang tampilan hanya ketika melewati breakpoint desktop/mobile.
     window.addEventListener('resize', function () {
-        if (window.innerWidth >= 1024) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.add('hidden');
-            toggleButton.setAttribute('aria-expanded', 'false');
-            menuIcon.innerHTML =
-                '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />';
-        } else {
-            sidebar.classList.add('-translate-x-full');
+        const nowDesktop = window.innerWidth >= desktopBreakpoint;
+        if (nowDesktop !== isDesktop) {
+            isDesktop = nowDesktop;
+            if (isDesktop) {
+                openSidebar();
+            } else {
+                closeSidebar();
+            }
         }
     });
 });
