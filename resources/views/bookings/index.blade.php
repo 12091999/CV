@@ -1,29 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings & Orders | SIGAPRODUCTION</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-slate-50 text-slate-800">
+@extends('layouts.app')
 
-<header class="bg-slate-950 text-white">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <div>
-            <h1 class="text-xl font-bold tracking-wide">SIGAPRODUCTION</h1>
-            <p class="text-sm text-slate-400">Company Management System</p>
-        </div>
-        <a href="{{ route('home') }}"
-           class="rounded-lg bg-slate-800 px-4 py-2 text-sm hover:bg-slate-700">
-            Dashboard
-        </a>
-    </div>
-</header>
+@section('title', 'Bookings & Orders')
+@section('breadcrumb', 'Bookings & Orders')
+@section('page-title', 'Bookings & Orders')
 
-<main class="mx-auto max-w-7xl px-6 py-10">
-
-    <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+@section('content')
+<div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
             <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">
                 Transaction Management
@@ -275,7 +257,4 @@
     <footer class="mt-8 text-center text-xs text-slate-400">
         © {{ date('Y') }} CV. Sigaproduction. All rights reserved.
     </footer>
-
-</main>
-</body>
-</html>
+@endsection

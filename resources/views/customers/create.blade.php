@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Pelanggan | SIGAPRODUCTION</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-slate-50 text-slate-800">
+@extends('layouts.app')
 
-<header class="bg-slate-950 text-white">
-    <div class="mx-auto max-w-5xl px-6 py-5">
-        <h1 class="text-xl font-bold">SIGAPRODUCTION</h1>
-        <p class="text-sm text-slate-400">Customer Management System</p>
-    </div>
-</header>
+@section('title', 'Tambah Pelanggan')
+@section('breadcrumb', 'Customers & Clients')
+@section('page-title', 'Tambah Pelanggan')
 
-<main class="mx-auto max-w-5xl px-6 py-10">
-    <a href="{{ route('customers.index') }}"
+@section('content')
+<a href="{{ route('customers.index') }}"
        class="text-sm font-semibold text-indigo-600">
         ← Kembali ke daftar pelanggan
     </a>
@@ -51,6 +40,4 @@
             @include('customers._form')
         </form>
     </div>
-</main>
-</body>
-</html>
+@endsection

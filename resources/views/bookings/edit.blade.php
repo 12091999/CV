@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Pesanan | SIGAPRODUCTION</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-slate-50 text-slate-800">
+@extends('layouts.app')
 
-<header class="bg-slate-950 text-white">
-    <div class="mx-auto max-w-5xl px-6 py-5">
-        <h1 class="text-xl font-bold">SIGAPRODUCTION</h1>
-        <p class="text-sm text-slate-400">Bookings & Orders Management</p>
-    </div>
-</header>
+@section('title', 'Edit Pesanan')
+@section('breadcrumb', 'Bookings & Orders')
+@section('page-title', 'Edit Pesanan')
 
-<main class="mx-auto max-w-5xl px-6 py-10">
-
-    <a href="{{ route('bookings.index') }}"
+@section('content')
+<a href="{{ route('bookings.index') }}"
        class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
         ← Kembali ke daftar pesanan
     </a>
@@ -65,7 +53,4 @@
             @include('bookings._form')
         </form>
     </div>
-
-</main>
-</body>
-</html>
+@endsection

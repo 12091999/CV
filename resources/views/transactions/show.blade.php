@@ -1,29 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Detail | SIGAPRODUCTION</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-slate-50 text-slate-800">
+@extends('layouts.app')
 
-<header class="bg-slate-950 text-white">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <div>
-            <h1 class="text-xl font-bold">SIGAPRODUCTION</h1>
-            <p class="text-sm text-slate-400">Finance Management System</p>
-        </div>
-        <a href="{{ route('transactions.index') }}"
-           class="rounded-lg bg-slate-800 px-4 py-2 text-sm hover:bg-slate-700">
-            Kembali
-        </a>
-    </div>
-</header>
+@section('title', 'Transaction Detail')
+@section('breadcrumb', 'Finance & Transactions')
+@section('page-title', 'Transaction Detail')
 
-<main class="mx-auto max-w-5xl px-6 py-10">
-
-    @if(session('success'))
+@section('content')
+@if(session('success'))
         <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-emerald-800">
             {{ session('success') }}
         </div>
@@ -246,7 +228,4 @@
         Dibuat {{ $transaction->created_at->format('d M Y H:i') }}
         · Diperbarui {{ $transaction->updated_at->format('d M Y H:i') }}
     </p>
-
-</main>
-</body>
-</html>
+@endsection
