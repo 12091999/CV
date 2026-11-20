@@ -13,6 +13,7 @@ return new class extends Migration {
                   ->constrained('business_units')
                   ->cascadeOnDelete();
             $table->string('title');
+            $table->string('category')->nullable(); // new column for type/kategori
             $table->text('description')->nullable();
             $table->string('file_path')->nullable();
             $table->boolean('is_active')->default(true);
