@@ -7,12 +7,39 @@
     <title>@yield('title', 'SIGAPRODUCTION') | CV. Sigaproduction</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
-    <style>
-        @media (min-width: 1024px) {
-            #sidebar.desktop-collapsed { transform: translateX(-100%); }
-            #mainContent.sidebar-expanded { margin-left: 0 !important; }
-        }
-    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    @media (min-width: 1024px) {
+        #sidebar.desktop-collapsed { transform: translateX(-100%); }
+        #mainContent.sidebar-expanded { margin-left: 0 !important; }
+    }
+    /* custom background images */
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+    /* Sidebar background */
+    #sidebar {
+        background-image: url('{{ asset('images/sigaproduction/post-04-guitar.webp') }}');
+        background-size: cover;
+        background-position: center;
+    }
+    /* Header background */
+    header.bg-slate-900\/95 {
+        background-image: url('{{ asset('images/sigaproduction/post-06-drumsticks.webp') }}');
+        background-size: cover;
+        background-position: center;
+    }
+    /* Main content background */
+    main#mainContent {
+        background-image: url('{{ asset('images/sigaproduction/post-07-shirt.webp') }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <body class="bg-slate-950 font-sans text-slate-100">
 <div class="min-h-screen flex">
