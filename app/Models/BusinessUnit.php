@@ -21,10 +21,14 @@ class BusinessUnit extends Model
         ];
     }
 
-    public function items(): HasMany
+    /**
+     * Relasi ke Catalog
+     */
+    public function catalogs()
     {
-        return $this->hasMany(BusinessItem::class);
+        return $this->hasMany(Catalog::class);
     }
+
 
     public function bookings(): HasMany
     {
