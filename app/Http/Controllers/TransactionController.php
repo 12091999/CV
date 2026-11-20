@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\BusinessUnit;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -100,6 +101,56 @@ class TransactionController extends Controller
             'netIncome',
             'businessUnits'
         ));
+    }
+
+    /**
+     * Menampilkan riwayat transaksi untuk satu bulan.
+     */
+    public function history(Request $request)
+    {
+        $validated = $request->validate([
+            'month' => ['nullable', 'date_format:Y-m'],
+        ]);
+
+        $month = $validated['month'] ?? now()->format('Y-m');
+        $monthDate = Carbon::createFromFormat('!Y-m', $month);
+        $startOfMonth = $monthDate->copy()->startOfMonth()->toDateString();
+        $startOfNextMonth = $monthDate->copy()->addMonth()->startOfMonth()->toDateString();
+
+        $transactions = Transaction::with([
+            'booking.customer',
+            'businessUnit',
+            'recorder',
+        ])
+            ->where('transaction_date', '>=', $startOfMonth)
+            ->where('transaction_date', '<', $startOfNextMonth)
+            ->latest('transaction_date')
+            ->latest('id')
+            ->paginate(15)
+            ->withQueryString();
+
+        $completedTransactions = Transaction::where('status', 'completed')
+            ->where('transaction_date', '>=', $startOfMonth)
+            ->where('transaction_date', '<', $startOfNextMonth);
+
+        $totalIncome = (clone $completedTransactions)
+            ->where('type', 'income')
+            ->sum('amount');
+
+        $totalExpense = (clone $completedTransactions)
+            ->where('type', 'expense')
+            ->sum('amount');
+
+        $netIncome = $totalIncome - $totalExpense;
+
+        return view('transactions.history', [
+            'transactions' => $transactions,
+            'month' => $month,
+            'monthLabel' => $monthDate->locale('id')->translatedFormat('F Y'),
+            'totalIncome' => $totalIncome,
+            'totalExpense' => $totalExpense,
+            'netIncome' => $netIncome,
+        ]);
     }
 
     /**

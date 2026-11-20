@@ -26,7 +26,10 @@ Route::middleware('auth')->group(function () {
         ->name('business-catalog.show');
 
     Route::resource('bookings', BookingController::class);
-    
+
+    Route::get('/transactions/history', [TransactionController::class, 'history'])
+        ->name('transactions.history');
+
     Route::resource('transactions', TransactionController::class);
 
 });

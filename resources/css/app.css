@@ -151,6 +151,28 @@ main .bg-blue-600 {
 main .bg-blue-700, main .hover\\:bg-blue-700:hover {
     background-color: #d90f35 !important;
 }
+#sidebar .sidebar-nav-link {
+    min-height: 44px;
+    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+}
+#sidebar .sidebar-nav-link:focus-visible {
+    outline: 2px solid #ff1744;
+    outline-offset: 2px;
+}
+#sidebar .sidebar-nav-link:active {
+    background-color: #202020;
+    color: #fff;
+    transform: scale(.98);
+}
+#sidebar .sidebar-nav-link.bg-blue-500:active {
+    background-color: #d90f35 !important;
+}
+@media (hover: hover) {
+    #sidebar .sidebar-nav-link:not(.bg-blue-500):hover {
+        background-color: #202020;
+        color: #fff;
+    }
+}
 main .bg-red-600 { background-color: #ff1744 !important; }
 main .hover\\:bg-red-700:hover { background-color: #d90f35 !important; }
 main .text-red-600, main .text-red-700, main .text-red-500 { color: #ff4568 !important; }

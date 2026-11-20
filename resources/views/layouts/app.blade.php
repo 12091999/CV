@@ -33,7 +33,8 @@
             <div>
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest px-3 mb-3">Overview</p>
                 <a href="{{ route('home') }}"
-                   @class(['flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('home'), 'text-slate-400 hover:bg-slate-800 hover:text-white' => !request()->routeIs('home')])>
+                   @if(request()->routeIs('home')) aria-current="page" @endif
+                   @class(['sidebar-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('home'), 'text-slate-400' => !request()->routeIs('home')])>
                     <span>▦</span> Dashboard
                 </a>
             </div>
@@ -41,7 +42,8 @@
             <div>
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest px-3 mb-3">Business Units</p>
                 <a href="{{ route('business-units.index') }}"
-                   @class(['flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('business-units.*'), 'text-slate-400 hover:bg-slate-800 hover:text-white' => !request()->routeIs('business-units.*')])>
+                   @if(request()->routeIs('business-units.*')) aria-current="page" @endif
+                   @class(['sidebar-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('business-units.*'), 'text-slate-400' => !request()->routeIs('business-units.*')])>
                     <span>♫</span> Business Units
                 </a>
             </div>
@@ -49,16 +51,24 @@
             <div>
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest px-3 mb-3">Management</p>
                 <a href="{{ route('customers.index') }}"
-                   @class(['flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('customers.*'), 'text-slate-400 hover:bg-slate-800 hover:text-white' => !request()->routeIs('customers.*')])>
+                   @if(request()->routeIs('customers.*')) aria-current="page" @endif
+                   @class(['sidebar-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('customers.*'), 'text-slate-400' => !request()->routeIs('customers.*')])>
                     <span>♙</span> Customers & Clients
                 </a>
                 <a href="{{ route('bookings.index') }}"
-                   @class(['flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('bookings.*'), 'text-slate-400 hover:bg-slate-800 hover:text-white' => !request()->routeIs('bookings.*')])>
+                   @if(request()->routeIs('bookings.*')) aria-current="page" @endif
+                   @class(['sidebar-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('bookings.*'), 'text-slate-400' => !request()->routeIs('bookings.*')])>
                     <span>▤</span> Bookings & Orders
                 </a>
                 <a href="{{ route('transactions.index') }}"
-                   @class(['flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('transactions.*'), 'text-slate-400 hover:bg-slate-800 hover:text-white' => !request()->routeIs('transactions.*')])>
+                   @if(request()->routeIs('transactions.index', 'transactions.create', 'transactions.show', 'transactions.edit')) aria-current="page" @endif
+                   @class(['sidebar-nav-link flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('transactions.index', 'transactions.create', 'transactions.show', 'transactions.edit'), 'text-slate-400' => !request()->routeIs('transactions.index', 'transactions.create', 'transactions.show', 'transactions.edit')])>
                     <span>Rp</span> Finance & Transactions
+                </a>
+                <a href="{{ route('transactions.history') }}"
+                   @if(request()->routeIs('transactions.history')) aria-current="page" @endif
+                   @class(['sidebar-nav-link mt-2 flex items-center gap-3 px-4 py-3 rounded-xl transition', 'bg-blue-500 text-white font-medium' => request()->routeIs('transactions.history'), 'text-slate-400' => !request()->routeIs('transactions.history')])>
+                    <span>◷</span> Riwayat Transaksi
                 </a>
             </div>
         </nav>
