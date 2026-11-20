@@ -26,6 +26,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        border-right: 1px solid rgba(255,255,255,0.1);
     }
     #sidebar::before {
         content: '';
@@ -77,6 +78,12 @@
         outline: 2px solid #fff;
         outline-offset: -2px;
     }
+    /* remove any gap between sidebar and main */
+    .min-h-screen.flex { gap:0; }
+    #sidebar, header.bg-slate-900\/95, main#mainContent { margin:0; }
+    /* ensure hover works above overlays */
+    .sidebar-nav-link:hover,
+    .sidebar-nav-link:focus { background-color: rgba(255,255,255,0.25) !important; color:#fff; }
 </style>
     <style>
         /* Ensure sidebar fills viewport */
@@ -85,14 +92,20 @@
         .sidebar-nav-link,
         header.bg-slate-900\/95,
         main#mainContent { color: #f1f5f9; }
-    </style>
+        /* remove any gap between sidebar and main */
+    .min-h-screen.flex { gap:0; }
+    #sidebar, header.bg-slate-900\/95, main#mainContent { margin:0; }
+    /* ensure hover works above overlays */
+    .sidebar-nav-link:hover,
+    .sidebar-nav-link:focus { background-color: rgba(255,255,255,0.25) !important; color:#fff; }
+</style>
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <body class="bg-slate-950 font-sans text-slate-100">
 <div class="min-h-screen flex">
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
 
-    <aside id="sidebar" class="flex w-72 bg-slate-950 text-white flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="flex-none w-0 lg:w-72 h-screen bg-slate-950 text-white flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="px-7 py-7 border-b border-slate-800">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-2xl">🎵</div>
