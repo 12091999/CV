@@ -84,6 +84,29 @@
     /* ensure hover works above overlays */
     .sidebar-nav-link:hover,
     .sidebar-nav-link:focus { background-color: rgba(255,255,255,0.25) !important; color:#fff; }
+
+    /* Sidebar collapse fix: keep the sidebar out of the document flow. */
+    #sidebar {
+        position: fixed !important;
+        inset: 0 auto 0 0 !important;
+        width: 18rem !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-shrink: 0 !important;
+        z-index: 50;
+    }
+    #sidebar > * { position: relative; z-index: 1; }
+
+    @media (min-width: 1024px) {
+        #mainContent { margin-left: 18rem; }
+        #mainContent.sidebar-expanded { margin-left: 0 !important; }
+        #sidebar.desktop-collapsed { transform: translateX(-100%); }
+    }
+    @media (max-width: 1023.98px) {
+        #mainContent { margin-left: 0 !important; }
+    }
 </style>
     <style>
         /* Ensure sidebar fills viewport */
