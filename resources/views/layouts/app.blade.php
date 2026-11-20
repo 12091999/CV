@@ -123,6 +123,19 @@
     .sidebar-nav-link:focus { background-color: rgba(255,255,255,0.25) !important; color:#fff; }
 </style>
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+<style>
+    /* Aksi pada menu/popup berubah menjadi danger saat diarahkan atau difokuskan. */
+    .popup-danger-hover:hover,
+    .popup-danger-hover:focus-visible,
+    .catalog-popup a:hover,
+    .catalog-popup button:hover {
+        color: #ef4444 !important;
+    }
+    .popup-danger-hover:focus-visible {
+        outline: 2px solid rgba(239, 68, 68, .65);
+        outline-offset: 2px;
+    }
+</style>
 </head>
 <body class="bg-slate-950 font-sans text-slate-100">
 <div class="min-h-screen flex">

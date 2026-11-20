@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BusinessItem extends Model
 {
-    protected $fillable = ['business_unit_id', 'name', 'slug', 'description', 'price', 'unit_label', 'is_active'];
+    protected $fillable = ['business_unit_id', 'name', 'slug', 'description', 'category', 'price', 'unit_label', 'is_active'];
 
     protected function casts(): array
     {
