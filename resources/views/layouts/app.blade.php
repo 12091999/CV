@@ -19,26 +19,73 @@
     body {
         font-family: 'Inter', sans-serif;
     }
-    /* Sidebar background */
+    /* Sidebar background with overlay */
     #sidebar {
+        position: relative;
         background-image: url('{{ asset('images/sigaproduction/post-04-guitar.webp') }}');
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
     }
-    /* Header background */
+    #sidebar::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.2);
+        pointer-events: none;
+    }
+    /* Header background with overlay */
     header.bg-slate-900\/95 {
+        position: relative;
         background-image: url('{{ asset('images/sigaproduction/post-06-drumsticks.webp') }}');
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
     }
-    /* Main content background */
+    header.bg-slate-900\/95::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.12);
+        pointer-events: none;
+    }
+    /* Main content (Dashboard) background with overlay */
     main#mainContent {
+        position: relative;
         background-image: url('{{ asset('images/sigaproduction/post-07-shirt.webp') }}');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+    main#mainContent::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.08);
+        pointer-events: none;
+    }
+    /* Sidebar navigation links */
+    .sidebar-nav-link {
+        transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar-nav-link:hover {
+        background-color: rgba(255,255,255,0.15);
+        color: #fff;
+    }
+    .sidebar-nav-link:focus {
+        outline: 2px solid #fff;
+        outline-offset: -2px;
     }
 </style>
+    <style>
+        /* Ensure sidebar fills viewport */
+        #sidebar { min-height: 100vh; }
+        /* Text contrast improvements */
+        .sidebar-nav-link,
+        header.bg-slate-900\/95,
+        main#mainContent { color: #f1f5f9; }
+    </style>
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <body class="bg-slate-950 font-sans text-slate-100">
